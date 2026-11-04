@@ -1,38 +1,48 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/app/lib/prisma";
+import { createClient } from "@supabase/supabase-js";
+import { verifyAdminSession } from "@/app/lib/auth";
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!,
+);
 
 export async function GET() {
   try {
-    const students = await prisma.student.findMany({
-      orderBy: { name: "asc" },
-    });
+    const isAdmin = await verifyAdminSession();
 
-    const today = new Date();
+    if (!isAdmin) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const { data: students, error } = await supabase
+      .from("Student")
+      .select("*")
+      .order("name", { ascending: true });
+
+    if (error) throw error;
 
     const indiaDate = new Date(
-      today.toLocaleString("en-US", {
+      new Date().toLocaleString("en-US", {
         timeZone: "Asia/Kolkata",
-      })
+      }),
     );
 
     const todayMonth = indiaDate.getMonth();
     const todayDate = indiaDate.getDate();
 
-    const todaysBirthdays = students.filter((student: {
-      dateOfBirth: Date;
-    }) => {
+    const todaysBirthdays = (students || []).filter((student) => {
       const dob = new Date(student.dateOfBirth);
 
-      return (
-        dob.getMonth() === todayMonth &&
-        dob.getDate() === todayDate
-      );
+      return dob.getUTCMonth() === todayMonth && dob.getUTCDate() === todayDate;
     });
 
     return NextResponse.json({
-      date: `${indiaDate.getFullYear()}-${String(
-        indiaDate.getMonth() + 1
-      ).padStart(2, "0")}-${String(indiaDate.getDate()).padStart(2, "0")}`, count: todaysBirthdays.length,
+      date: `${indiaDate.getFullYear()}-${String(todayMonth + 1).padStart(
+        2,
+        "0",
+      )}-${String(todayDate).padStart(2, "0")}`,
+      count: todaysBirthdays.length,
       birthdays: todaysBirthdays,
     });
   } catch (error) {
@@ -40,7 +50,7 @@ export async function GET() {
 
     return NextResponse.json(
       { error: "Could not load today's birthdays." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
