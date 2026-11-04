@@ -338,7 +338,7 @@ export default function Home() {
           <div className="flex flex-wrap items-center gap-3">
             <button
               type="button"
-              onClick={() => void loadDashboard()}
+              onClick={() => window.location.reload()}
               disabled={loading}
               className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold shadow-sm transition hover:bg-slate-100 disabled:opacity-50"
             >

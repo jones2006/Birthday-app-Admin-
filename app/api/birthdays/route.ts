@@ -22,26 +22,38 @@ export async function GET() {
 
     if (error) throw error;
 
-    const indiaDate = new Date(
-      new Date().toLocaleString("en-US", {
-        timeZone: "Asia/Kolkata",
-      }),
+    // Get today's date in Indian timezone
+    const todayParts = new Intl.DateTimeFormat("en-GB", {
+      timeZone: "Asia/Kolkata",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }).formatToParts(new Date());
+
+    const todayMonth = Number(
+      todayParts.find((part) => part.type === "month")?.value,
     );
 
-    const todayMonth = indiaDate.getMonth();
-    const todayDate = indiaDate.getDate();
+    const todayDay = Number(
+      todayParts.find((part) => part.type === "day")?.value,
+    );
 
+    const todayYear = Number(
+      todayParts.find((part) => part.type === "year")?.value,
+    );
+
+    // Compare the stored DOB calendar date without timezone conversion
     const todaysBirthdays = (students || []).filter((student) => {
-      const dob = new Date(student.dateOfBirth);
+      const dobDate = String(student.dateOfBirth).slice(0, 10);
+      const [, month, day] = dobDate.split("-").map(Number);
 
-      return dob.getUTCMonth() === todayMonth && dob.getUTCDate() === todayDate;
+      return month === todayMonth && day === todayDay;
     });
 
     return NextResponse.json({
-      date: `${indiaDate.getFullYear()}-${String(todayMonth + 1).padStart(
-        2,
-        "0",
-      )}-${String(todayDate).padStart(2, "0")}`,
+      date: `${todayYear}-${String(todayMonth).padStart(2, "0")}-${String(
+        todayDay,
+      ).padStart(2, "0")}`,
       count: todaysBirthdays.length,
       birthdays: todaysBirthdays,
     });

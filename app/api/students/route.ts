@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { verifyAdminSession } from "@/app/lib/auth";
+import { randomUUID } from "crypto";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseSecretKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -15,6 +16,7 @@ async function checkAdmin() {
   return await verifyAdminSession();
 }
 
+// GET: Fetch all students
 export async function GET() {
   try {
     if (!(await checkAdmin())) {
@@ -49,6 +51,7 @@ export async function GET() {
   }
 }
 
+// POST: Add a new student
 export async function POST(request: Request) {
   try {
     if (!(await checkAdmin())) {
@@ -83,6 +86,7 @@ export async function POST(request: Request) {
     const { data: student, error } = await supabase
       .from("Student")
       .insert({
+        id: randomUUID(),
         name,
         registerNumber,
         whatsappNumber,
@@ -95,6 +99,8 @@ export async function POST(request: Request) {
       .single();
 
     if (error) {
+      console.error("Supabase student insert error:", error);
+
       if (error.code === "23505") {
         return NextResponse.json(
           { error: "This register number already exists." },
@@ -121,12 +127,16 @@ export async function POST(request: Request) {
     console.error("Error creating student:", error);
 
     return NextResponse.json(
-      { error: "Could not save the student." },
+      {
+        error: "Could not save the student.",
+        details: error instanceof Error ? error.message : String(error),
+      },
       { status: 500 },
     );
   }
 }
 
+// DELETE: Delete a student
 export async function DELETE(request: Request) {
   try {
     if (!(await checkAdmin())) {
