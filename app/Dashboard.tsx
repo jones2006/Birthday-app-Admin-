@@ -370,7 +370,7 @@ export default function Home() {
         <section className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <StatCard
             title="First year Students"
-            value={loading ? "—" : students.length}
+            value={loading ? "—" : yearCount(1)}
             subtitle="Registered students"
             icon={<Users size={22} />}
           />
