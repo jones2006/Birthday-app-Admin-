@@ -1,36 +1,146 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎂 BirthdayHub – Admin Dashboard
 
-## Getting Started
+A web-based administration dashboard for managing student records and birthday celebrations for the Department of Computer Science and Engineering.
 
-First, run the development server:
+## 🚀 Overview
+
+BirthdayHub Admin Dashboard helps authorized department administrators manage student information and maintain the data used by the BirthdayHub mobile application.
+
+The dashboard provides a centralized interface for managing student records, academic years, and birthday-related information through Supabase.
+
+## 🖥️ Screenshots & UI Preview
+
+### Admin Dashboard
+![Admin Dashboard](docs/screenshots/dashboard.png)
+
+### Login Page
+![Login Page](docs/screenshots/login.png)
+
+### Student Management
+![Student Management](docs/screenshots/students.png)
+
+### Add Student
+![Add Student](docs/screenshots/add-student.png)
+
+> Screenshots showcase the user interface and key functionalities of the BirthdayHub Admin Dashboard.
+
+## ✨ Features
+
+- **Admin Authentication** – Secure access for authorized administrators.
+- **Student Management** – Add, view, and delete student records.
+- **Academic Year Management** – Organize students according to their academic years.
+- **Student Information** – Manage student names, register numbers, date of birth, WhatsApp numbers, and profile photos.
+- **Supabase Integration** – Store and retrieve student information from the database.
+- **Mobile App Integration** – Provide student data for the BirthdayHub React Native application.
+
+## 🛠️ Tech Stack
+
+| Technology | Purpose |
+|---|---|
+| Next.js | Frontend and API routes |
+| React | User interface |
+| TypeScript | Type safety |
+| Supabase | Database and authentication |
+| Tailwind CSS | Styling |
+| Vercel | Deployment |
+
+## 📁 Project Structure
+
+```text
+birthdayhub-admin/
+├── app/
+│   ├── api/
+│   │   ├── auth/
+│   │   └── students/
+│   ├── login/
+│   └── dashboard/
+├── components/
+├── lib/
+├── public/
+├── docs/
+│   └── screenshots/
+│       ├── dashboard.png
+│       ├── login.png
+│       ├── students.png
+│       └── add-student.png
+├── .env.local
+├── package.json
+└── README.md
+```
+
+*Note: Update this structure to match the actual repository.*
+
+## ⚙️ Getting Started
+
+### 1. Clone the repository
+
+```bash
+git clone YOUR_REPOSITORY_URL
+cd birthdayhub-admin
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Configure environment variables
+
+Create a `.env.local` file in the project root:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+Use the actual environment variable names required by your Supabase client configuration. Never expose service-role keys or other server secrets.
+
+### 4. Run the development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🗄️ Database
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+BirthdayHub uses Supabase to manage student information.
 
-## Learn More
+The student records include:
 
-To learn more about Next.js, take a look at the following resources:
+- Student ID
+- Student Name
+- Register Number
+- Date of Birth
+- WhatsApp Number
+- Academic Year
+- Student Photo
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🌐 Deployment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The admin dashboard can be deployed using Vercel.
 
-## Deploy on Vercel
+1. Import the GitHub repository into Vercel.
+2. Configure the required environment variables.
+3. Deploy the application.
+4. Verify the dashboard and Supabase connection.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📱 Related Project
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**BirthdayHub Mobile Application**
+
+The React Native mobile application uses the student information managed through this dashboard to display student details and birthday information.
+
+## 👨‍💻 Developer
+
+**Jones J.**
+
+- GitHub: [@jones2006](https://github.com/jones2006)
+
+---
+
+<p align="center">
+  Made with ❤️ for the Department of Computer Science and Engineering
+</p>
